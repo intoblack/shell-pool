@@ -2,6 +2,10 @@
 
 
 #得到文件行数
+
+
+NULL='\0'
+__RESULT=$NULL
 get_file_line()
 {
 	_sum=$(wc -l $1 | tail -n 1 | awk '{print $1}')
@@ -22,16 +26,23 @@ rm_zero_line()
 read_file_line()
 {
       if [ ! -f $1 ] ; then
-      	
-          return 
+
+          return
       fi
       while read -r line;do  $line ; done < $1
 }
 
+get_newest_change_file()
+{
+    if [ -d $1 ] ; then
+        __RESULT=$( ls -lht  | head -n 2 | tail -n 1 | awk '{print $9}' )
+    else :
+        __RESULT=$NULL
+    fi
+}
 
-
-read_file_line /home/lixuze/Script/sh/cat_newestfile.sh
-echo $?
+get_newest_change_file /home/lixuze/Script/sh/
+echo $__RESULT
 
 
 
