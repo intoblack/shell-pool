@@ -1,6 +1,6 @@
 PROJECTS="pynettool,python pyfly,python intoblack.github.com,python script-pool,sh cgame,c JargsParsr,Java pyregx,python sixgod,python xsearch,Java zoo-segment,python 
 moodstyle,python js-cool,js pg-tool,python shell-pool,sh zoo-dict,python zoo-pool,Java proxy-tool,python pymongo,python"
-BASE_PATH="/home/lixuze/github"
+BASE_PATH="/home/xxxx/github"
 USERNAME=""
 GITHUB="git@github.com:$USERNAME"
 
