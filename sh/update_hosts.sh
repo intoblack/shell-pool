@@ -1,4 +1,13 @@
 #!/bin/sh
+##! create by intohole
+##! update ubuntu linux hosts , to connetct google.com 
+##!
+##!
+##!
+##!
+##!
+##!
+##!
 
 
 
@@ -31,8 +40,7 @@ gawk 'ARGIND==1{
 
         for(host in new_hosts){
            if(!(host in old_hosts)){
-               print old_hosts[host] , host
+               print new_hosts[host] , host
            }
         }        
-}' /etc/hosts /tmp/hosts 
-
+}' /etc/hosts /tmp/hosts  > /etc/hosts
