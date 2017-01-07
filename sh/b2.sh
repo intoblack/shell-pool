@@ -123,3 +123,11 @@ function gitpush(){
 
 
 }
+
+
+
+function calc(){
+    
+    echo | awk '{print ('"$*"')}'
+
+}
