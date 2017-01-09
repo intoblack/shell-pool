@@ -131,3 +131,9 @@ function calc(){
     echo | awk '{print ('"$*"')}'
 
 }
+function jj(){
+    if [ "$1" == "" ];then
+        return
+    fi
+    cd `echo "$1" | awk -F "." '{if(NF == 1) {print "."} else {s = "" ; for(i = 3;i<=NF;i++){s="../"s};print s}}'`
+}
