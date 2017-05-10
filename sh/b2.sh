@@ -117,11 +117,8 @@ ${un_tar_command} $1
 function gitpush(){
     git pull
     git add -A
-    git commit -m "$1"
+    git commit -m "$*"
     git push 
-
-
-
 }
 
 
