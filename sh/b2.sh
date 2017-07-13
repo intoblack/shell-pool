@@ -114,13 +114,6 @@ ${un_tar_command} $1
     fi
                                                                     }
 
-function gitpush(){
-    git pull
-    git add -A
-    git commit -m "$*"
-    git push 
-}
-
 
 
 function calc(){
@@ -133,4 +126,46 @@ function jj(){
         return
     fi
     cd `echo "$1" | awk -F "." '{if(NF == 1) {print "."} else {s = "" ; for(i = 3;i<=NF;i++){s="../"s};print s}}'`
+}
+
+function gitpush(){
+        git pull
+        [ $? -ne 0 ] && echo "pull error" && return
+        git add -A
+        [ $? -ne 0 ] && echo "add error" && return
+        git commit -m "$1"
+        [ $? -ne 0 ] && echo "commit error" && return
+        git push
+}
+
+function rmlocal(){
+    MVN_PATH="${HOME}/.m2/repository/com/tmall/promotion/"
+    [ -d "${MVN_PATH}" ] && return $(echo "y" | rm -rf ${MVN_PATH})
+}
+
+function gitdiff(){
+    if [ -n "$1" ];then
+        git status | grep modified | awk 'NR == '$1'{print $2}' | xargs git diff
+    else
+        git status | grep modified | awk '{print $2}' | xargs git diff
+    fi
+}
+
+function gbranch(){
+    if [ $# -ge 1 ];then
+        if [ "$1" =  "-c" ];then
+            git branch | grep  "^* "
+        elif [ "$1" = "-p" ];then
+            git fetch
+            git pull
+            git checkout "$2"
+            git pull
+        elif [ "$1" = "-g" ];then
+            git branch | awk '{print $1}' | grep "$2"
+        else
+            git branch | awk '{if(NR == '$1'){print }}' | xargs git checkout
+        fi
+    else
+        git branch | awk '{print NR".    "$0 }'
+    fi
 }
