@@ -162,6 +162,8 @@ function gbranch(){
             git pull
         elif [ "$1" = "-g" ];then
             git branch | awk '{print $1}' | grep "$2"
+		elif [ "$1" == "-gp" ];then
+			git branch | awk '{print $1}' | grep "$2" | xargs git checkout 
         else
             git branch | awk '{if(NR == '$1'){print }}' | xargs git checkout
         fi
