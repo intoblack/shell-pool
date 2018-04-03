@@ -90,42 +90,44 @@ for(set in sets){
 
 function untar(){
 
-if [ -f "$1" ];then
-        local un_tar_command=`echo "$1"  | awk '{
-        if($1 ~/\.tgz$/){
-                print "tar -zxvf"
-        }else if($1 ~/\.tar\.gz$/){
-        print "tar -xzvf"
-}else if($1 ~/\.tar$/){
-print "tar -xvf"
+        if [ -f "$1" ];then
+                local un_tar_command=`echo "$1"  | awk '{
+                if($1 ~/\.tgz$/){
+                        print "tar -zxvf"
+                }else if($1 ~/\.tar\.gz$/){
+                print "tar -xzvf"
+       
+        }else if{
+            print "gunzip "
+        }else if($1 ~/\.tar$/){
+            print "tar -xvf"
         }else if($1 ~/\.tar\.bz2$/){
-        print "tar -xjvf";
-}else if($1 ~/\.tar\.Z$/){
-print "tar -xZvf" ;
+            print "tar -xjvf";
+        }else if($1 ~/\.tar\.Z$/){
+            print "tar -xZvf" ;
         }else if($1 ~/\.rar$/){
-        print "unrar e"
-}else if($1 ~/\.zip$/){
-print "unzip"
+            print "unrar e"
+        }else if($1 ~/\.zip$/){
+            print "unzip"
         }
 }'`
 ${un_tar_command} $1
     else
             echo "$1 not exist file , please check"
     fi
-                                                                    }
-
+}
 
 
 function calc(){
-    
-    echo | awk '{print ('"$*"')}'
+
+        echo | awk '{print ('"$*"')}'
 
 }
 function jj(){
-    if [ "$1" == "" ];then
-        return
-    fi
-    cd `echo "$1" | awk -F "." '{if(NF == 1) {print "."} else {s = "" ; for(i = 3;i<=NF;i++){s="../"s};print s}}'`
+        if [ "$1" == "" ];then
+                return
+        fi
+        cd `echo "$1" | awk -F "." '{if(NF == 1) {print "."} else {s = "" ; for(i = 3;i<=NF;i++){s="../"s};print s}}'`
 }
 
 function gitpush(){
@@ -138,36 +140,31 @@ function gitpush(){
         git push
 }
 
-function rmlocal(){
-    MVN_PATH="${HOME}/.m2/repository/com/tmall/promotion/"
-    [ -d "${MVN_PATH}" ] && return $(echo "y" | rm -rf ${MVN_PATH})
-}
-
 function gitdiff(){
-    if [ -n "$1" ];then
-        git status | grep modified | awk 'NR == '$1'{print $2}' | xargs git diff
-    else
-        git status | grep modified | awk '{print $2}' | xargs git diff
-    fi
+        if [ -n "$1" ];then
+                git status | grep modified | awk 'NR == '$1'{print $2}' | xargs git diff
+        else
+                git status | grep modified | awk '{print $2}' | xargs git diff
+        fi
 }
 
 function gbranch(){
-    if [ $# -ge 1 ];then
-        if [ "$1" =  "-c" ];then
-            git branch | grep  "^* "
-        elif [ "$1" = "-p" ];then
-            git fetch
-            git pull
-            git checkout "$2"
-            git pull
-        elif [ "$1" = "-g" ];then
-            git branch | awk '{print $1}' | grep "$2"
-		elif [ "$1" == "-gp" ];then
-			git branch | awk '{print $1}' | grep "$2" | xargs git checkout 
+        if [ $# -ge 1 ];then
+                if [ "$1" =  "-c" ];then
+                        git branch | grep  "^* "
+                elif [ "$1" = "-p" ];then
+                        git fetch
+                        git pull
+                        git checkout "$2"
+                        git pull
+                elif [ "$1" = "-g" ];then
+                        git branch | awk '{print $1}' | grep "$2"
+                elif [ "$1" == "-gp" ];then
+                        git branch | awk '{print $1}' | grep "$2" | xargs git checkout 
+                else
+                        git branch | awk '{if(NR == '$1'){print }}' | xargs git checkout
+                fi
         else
-            git branch | awk '{if(NR == '$1'){print }}' | xargs git checkout
+                git branch | awk '{print NR".    "$0 }'
         fi
-    else
-        git branch | awk '{print NR".    "$0 }'
-    fi
 }
